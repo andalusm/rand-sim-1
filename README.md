@@ -12,7 +12,7 @@ When you do a `console.log` inside of `api.js`, you won't see the log in the bro
 # Requirements (bug fixes)
 
 Make it work. Should be able to:    
-- Add new `todo` properly x
+- Add new `todo` properly 
 - Mark a `todo` as complete by clicking checkmark
 - Delete a `todo` by clicking trashcan
 
@@ -23,7 +23,7 @@ Files you should be working with:
 
 # Features
 - Allow the user to "toggle" a complete
-    - Clicking the checkmark once "completes" the task, clicking it again "uncompletes" it
+    - Clicking the checkmark once "completes" the task, clicking it again "uncompletes" it 
 - Convert to OOP!
 - Allow the user to set a "priority" for each `todo`
     - "HIGH" priority `todo`s should have a background color of red, "MED" orange, and "LOW" green

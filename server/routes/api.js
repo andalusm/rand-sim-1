@@ -1,33 +1,78 @@
 const express = require('express')
 const router = express.Router()
+class Todo {
+    constructor() {
+        this.todos = []
+        this._id = 0
+    }
+    getNewId() {
+        this._id++
+        return this._id
+    }
+    newTodo(text, priority) {
+        const newTodo = { id: this.getNewId(), text: text, complete: false, priority: priority }
+        this.todos.push(newTodo)
+    }
+    getTodos() {
+        return this.todos
+    }
+    upgradeTodo(todoID) {
+        const todo = this.getTodos().find(t => t.id == todoID)
+        if (todo) {
+            const priority = todo.priority
+            if (priority == "low") {
+                todo.priority = "med"
+            }
+            else if (priority == "med") {
+                todo.priority = "high"
+            }
+            else {
+                todo.priority = "low"
+            }
+        }
+    }
+    completeTodo(todoID) {
+        const t = todo.getTodos().find(t => t.id == todoID).complete
+        todo.getTodos().find(t => t.id == todoID).complete = !t
+    }
+    removeTodo(todoID) {
+        const index = todo.getTodos().findIndex(t => t.id == todoID)
+        if (index >= 0) {
+            todo.getTodos().splice(index, 1)
+        }
+    }
+}
 
-const todos = []
-let id = 1
+const todo = new Todo()
 
 router.get('/todos', function (req, res) {
-    res.send(todos)
+    console.log(todo.getTodos())
+    res.send(todo.getTodos())
 })
 
 router.post('/todo', function (req, res) {
     const text = req.body.text
-    const newTodo = { id: id++, text: text, complete: false }
-
-    todos.push(newTodo)
-    res.send(todos)
+    const priority = req.body.priority
+    todo.newTodo(text, priority)
+    res.send(todo.getTodos())
 })
 
 router.put('/todo/:todoID', function (req, res) {
     const todoID = req.params.todoID
+    todo.completeTodo(todoID)
+    res.send(todo.getTodos())
+})
 
-    todos.find(t => t.id == todoID).complete = true
-    res.send(todos)
+router.put('/upgrade/:todoID', function (req, res) {
+    const todoID = req.params.todoID
+    todo.upgradeTodo(todoID)
+    res.send(todo.getTodos())
 })
 
 router.delete('/todo/:todoID', function (req, res) {
     const todoID = req.params.todoID
-    const index =todos.findIndex(t => t.id == todoID)
-    todos.splice(index, 1)
-    res.send(todos)
+    todo.removeTodo(todoID)
+    res.send(todo.getTodos())
 })
 
 module.exports = router

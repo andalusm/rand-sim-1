@@ -9,7 +9,7 @@ body{
     width: calc(100% - 20px);
     display: grid;
     justify-self: center;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr 1fr 2fr;
 }
 
 input{
@@ -35,7 +35,19 @@ button{
     border-radius: 3px;
     display: grid;
     grid-template-columns: 5% 90% 5%;
-    background-color: #7ed6df;
+    
+}
+
+.low{
+    background-color: green;
+}
+
+.high{
+    background-color:crimson;
+}
+
+.med{
+    background-color: orange;
 }
 
 .todo.complete .text{

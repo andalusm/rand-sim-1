@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
         integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         
     <link rel="stylesheet" href="style.css">
     <title>FullStack ToDo</title>
@@ -17,12 +19,27 @@
 
     <div class="user-input">
         <input type="text" id="todo-input" placeholder="What's new?">
+        <select name="priority" id="priority">
+            <option value="high">HIGH</option>
+            <option value="med">MED</option>
+            <option value="low">LOW</option>
+        </select>
         <button id="addToDo" onclick=add()>Add</button>
     </div>
 
     <div id="todos"></div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script id="todo-template" type="text/x-handlebars-template">
+        {{#each todo}}
+        <div data-id={{id}} class="todo {{#if complete}}complete {{/if}}{{priority}}">
+            <i class="fas fa-check-circle"></i>
+            <span class=text>{{text}}</span>
+            <span class="delete"><i class="fas fa-trash"></i></span>
+        </div>
+
+        {{/each}}
+    </script>
+
     <script src="main.js"></script>
 </body>
 

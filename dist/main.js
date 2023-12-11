@@ -1,22 +1,22 @@
 // BAD PRACTICE - not proper MVC. Should be separated to files.
-const render = function (todos) {
+class Renderer {
+
+
+render(todos) {
 
     $("#todos").empty()
-
-    todos.forEach(todo => {
-        $("#todos").append(`
-        <div data-id=${todo.id} class="todo ${todo.complete ? 'complete' : ''}">
-            <i class="fas fa-check-circle"></i>
-            <span class=text>${todo.text}</span>
-            <span class="delete"><i class="fas fa-trash"></i></span>
-        </div>
-        `)
-    })
+    const source = $("#todo-template").html();
+    const template = Handlebars.compile(source);
+    let newHTML = template({todo:todos});
+    $("#todos").append(newHTML)
+}
 }
 
+const renderer = new Renderer()
+
 const add = function () {
-    $.post('/todo', { text: $("#todo-input").val() }, function (todos) {
-        render(todos)
+    $.post('/todo', { text: $("#todo-input").val(), priority: $("#priority").find(":selected").val() }, function (todos) {
+        renderer.render(todos)
         $("#todo-input").val("")
     })
 }
@@ -27,7 +27,7 @@ $("#todos").on("click", ".fa-check-circle", function () {
     $.ajax({
         method: "PUT",
         url: "/todo/" + id,
-        success: todos => render(todos)
+        success: todos => renderer.render(todos)
     })
 })
 
@@ -36,8 +36,17 @@ $("#todos").on("click", ".fa-trash", function () {
     $.ajax({
         method: "DELETE",
         url: "/todo/" + id,
-        success: todos => render(todos)
+        success: todos => renderer.render(todos)
     })
 })
 
-$.get('/todos', todos => render(todos))
+$("#todos").on("click", ".text", function () {
+    const id = $(this).closest(".todo`").data().id
+    $.ajax({
+        method: "PUT",
+        url: "/upgrade/" + id,
+        success: todos => renderer.render(todos)
+    })
+});
+
+$.get('/todos', todos => renderer.render(todos))
